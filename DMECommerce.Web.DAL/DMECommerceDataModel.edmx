@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="db_DMEcommerceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PriceRegular" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="PriceDiscount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="ProductDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BrandId" Type="int" />
+          <Property Name="BarCode" Type="nvarchar(max)" />
+          <Property Name="TaxTypeId" Type="int" />
+          <Property Name="IsInStock" Type="bit" Nullable="false" />
+          <Property Name="MaxOrderQty" Type="float" />
+          <Property Name="DateAdd" Type="datetime" Nullable="false" />
+          <Property Name="DateLastUpdate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REFBrand">
+          <Key>
+            <PropertyRef Name="BrandId" />
+          </Key>
+          <Property Name="BrandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REFOrderStatus">
+          <Key>
+            <PropertyRef Name="OrderStatusId" />
+          </Key>
+          <Property Name="OrderStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderStatusName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REFTaxType">
+          <Key>
+            <PropertyRef Name="TaxTypeId" />
+          </Key>
+          <Property Name="TaxTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaxValue" Type="float" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Product_ToREFBrand">
+          <End Role="REFBrand" Type="Self.REFBrand" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REFBrand">
+              <PropertyRef Name="BrandId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ToREFTaxType">
+          <End Role="REFTaxType" Type="Self.REFTaxType" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REFTaxType">
+              <PropertyRef Name="TaxTypeId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="TaxTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_DMEcommerceModelStoreContainer">
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REFBrand" EntityType="Self.REFBrand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REFOrderStatus" EntityType="Self.REFOrderStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REFTaxType" EntityType="Self.REFTaxType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Product_ToREFBrand" Association="Self.FK_Product_ToREFBrand">
+            <End Role="REFBrand" EntitySet="REFBrand" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ToREFTaxType" Association="Self.FK_Product_ToREFTaxType">
+            <End Role="REFTaxType" EntitySet="REFTaxType" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_DMEcommerceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PriceRegular" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="PriceDiscount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BrandId" Type="Int32" />
+          <Property Name="BarCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaxTypeId" Type="Int32" />
+          <Property Name="IsInStock" Type="Boolean" Nullable="false" />
+          <Property Name="MaxOrderQty" Type="Double" />
+          <Property Name="DateAdd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateLastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="REFBrand" Relationship="Self.FK_Product_ToREFBrand" FromRole="Product" ToRole="REFBrand" />
+          <NavigationProperty Name="REFTaxType" Relationship="Self.FK_Product_ToREFTaxType" FromRole="Product" ToRole="REFTaxType" />
+        </EntityType>
+        <EntityType Name="REFBrand">
+          <Key>
+            <PropertyRef Name="BrandId" />
+          </Key>
+          <Property Name="BrandId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrandName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_ToREFBrand" FromRole="REFBrand" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="REFOrderStatus">
+          <Key>
+            <PropertyRef Name="OrderStatusId" />
+          </Key>
+          <Property Name="OrderStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderStatusName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REFTaxType">
+          <Key>
+            <PropertyRef Name="TaxTypeId" />
+          </Key>
+          <Property Name="TaxTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaxValue" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_ToREFTaxType" FromRole="REFTaxType" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Product_ToREFBrand">
+          <End Role="REFBrand" Type="Self.REFBrand" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REFBrand">
+              <PropertyRef Name="BrandId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ToREFTaxType">
+          <End Role="REFTaxType" Type="Self.REFTaxType" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REFTaxType">
+              <PropertyRef Name="TaxTypeId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="TaxTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_DMEcommerceEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="REFBrand" EntityType="Self.REFBrand" />
+          <EntitySet Name="REFOrderStatus" EntityType="Self.REFOrderStatus" />
+          <EntitySet Name="REFTaxType" EntityType="Self.REFTaxType" />
+          <AssociationSet Name="FK_Product_ToREFBrand" Association="Self.FK_Product_ToREFBrand">
+            <End Role="REFBrand" EntitySet="REFBrand" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ToREFTaxType" Association="Self.FK_Product_ToREFTaxType">
+            <End Role="REFTaxType" EntitySet="REFTaxType" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_DMEcommerceModelStoreContainer" CdmEntityContainer="db_DMEcommerceEntities1">
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="db_DMEcommerceModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="PriceRegular" ColumnName="PriceRegular" />
+                <ScalarProperty Name="PriceDiscount" ColumnName="PriceDiscount" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+                <ScalarProperty Name="TaxTypeId" ColumnName="TaxTypeId" />
+                <ScalarProperty Name="IsInStock" ColumnName="IsInStock" />
+                <ScalarProperty Name="MaxOrderQty" ColumnName="MaxOrderQty" />
+                <ScalarProperty Name="DateAdd" ColumnName="DateAdd" />
+                <ScalarProperty Name="DateLastUpdate" ColumnName="DateLastUpdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REFBrand">
+            <EntityTypeMapping TypeName="db_DMEcommerceModel.REFBrand">
+              <MappingFragment StoreEntitySet="REFBrand">
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REFOrderStatus">
+            <EntityTypeMapping TypeName="db_DMEcommerceModel.REFOrderStatus">
+              <MappingFragment StoreEntitySet="REFOrderStatus">
+                <ScalarProperty Name="OrderStatusId" ColumnName="OrderStatusId" />
+                <ScalarProperty Name="OrderStatusName" ColumnName="OrderStatusName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REFTaxType">
+            <EntityTypeMapping TypeName="db_DMEcommerceModel.REFTaxType">
+              <MappingFragment StoreEntitySet="REFTaxType">
+                <ScalarProperty Name="TaxTypeId" ColumnName="TaxTypeId" />
+                <ScalarProperty Name="TaxValue" ColumnName="TaxValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
